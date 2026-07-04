@@ -2,10 +2,12 @@ package com.demo.courier_gateway_service.model.request;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public record CourierLocationRequest(
-        @NotNull(message = "Courier cannot be null")
+        @NotBlank(message = "Courier cannot be blank")
         String courier,
 
         @NotNull(message = "Latitude cannot be null")
@@ -19,5 +21,6 @@ public record CourierLocationRequest(
         Double longitude,
 
         @NotNull(message = "Timestamp cannot be null")
+        @Positive(message = "Timestamp must be positive")
         Long timestamp
 ) {}
