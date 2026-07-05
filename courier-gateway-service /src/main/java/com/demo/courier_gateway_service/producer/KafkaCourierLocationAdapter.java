@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaCourierLocationAdapter implements CourierLocationPublisher {
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, CourierLocationEventDTO> kafkaTemplate;
     private final KafkaTopicProperties topicProperties;
 
     @Override
