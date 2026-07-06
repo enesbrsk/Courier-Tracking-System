@@ -21,7 +21,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CourierLocationEventHandler {
 
-    private final CourierRepository courierRepository;
     private final CachedLastLocationRepository cachedLastLocationRepository;
     private final CourierDistanceRepository courierDistanceRepository;
     private final DistanceCalculator distanceCalculator;
