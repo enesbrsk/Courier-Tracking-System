@@ -7,5 +7,9 @@ public record CourierLocationEventDTO(
         String courierId,
         Double latitude,
         Double longitude,
-        Instant time
-) {}
+        String time
+) {
+    public Instant eventTime() {
+        return Instant.parse(time);
+    }
+}

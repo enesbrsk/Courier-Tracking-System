@@ -3,7 +3,9 @@ package com.demo.distance_service.service;
 import com.demo.distance_service.exception.CourierNotFoundException;
 import com.demo.distance_service.model.DistanceProperties;
 import com.demo.distance_service.model.dto.CourierLocationEventDTO;
+import com.demo.distance_service.repository.CourierDistanceEntity;
 import com.demo.distance_service.repository.CourierDistanceRepository;
+import com.demo.distance_service.repository.CourierRepository;
 import com.demo.distance_service.service.calculator.DistanceCalculator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,14 +17,18 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CourierLocationEventHandler {
 
+    private final CourierRepository courierRepository;
     private final CourierDistanceRepository courierDistanceRepository;
     private final DistanceCalculator distanceCalculator;
     private final DistanceProperties distanceProperties;
 
     @Transactional
     public void processCourierLocation(CourierLocationEventDTO event) {
-        var courier = courierDistanceRepository.findByCourier_Id(event.courierId())
+        var courierEntity = courierRepository.findById(event.courierId())
                 .orElseThrow(() -> new CourierNotFoundException(event.courierId()));
+
+        var courier = courierDistanceRepository.findByCourier_Id(event.courierId())
+                .orElseGet(() -> new CourierDistanceEntity(courierEntity));
 
         if (courier.hasLastKnownLocation()) {
             double distance = distanceCalculator.calculateMeters(
@@ -35,7 +41,7 @@ public class CourierLocationEventHandler {
             }
         }
 
-        courier.updateLastLocation(event.latitude(), event.longitude(), event.time());
+        courier.updateLastLocation(event.latitude(), event.longitude(), event.eventTime());
         courierDistanceRepository.save(courier);
     }
 }

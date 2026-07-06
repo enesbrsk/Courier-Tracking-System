@@ -69,7 +69,7 @@ class StoreEntryEventHandlerTest {
         when(reEntryLockService.isAllowed("courier-1", ATASEHIR.name())).thenReturn(true);
 
         storeEntryEventHandler.processStoreEntry(
-                new CourierLocationEventDTO("evt-1", "courier-1", 40.9923307, 29.1244229, EVENT_TIME));
+                new CourierLocationEventDTO("evt-1", "courier-1", 40.9923307, 29.1244229, EVENT_TIME.toString()));
 
         var captor = ArgumentCaptor.forClass(CourierStoreEntryEntity.class);
         verify(courierStoreEntryRepository).save(captor.capture());
@@ -84,7 +84,7 @@ class StoreEntryEventHandlerTest {
         when(distanceCalculator.calculateMeters(41.5, 29.0, 40.9923307, 29.1244229)).thenReturn(60000.0);
 
         storeEntryEventHandler.processStoreEntry(
-                new CourierLocationEventDTO("evt-1", "courier-1", 41.5, 29.0, EVENT_TIME));
+                new CourierLocationEventDTO("evt-1", "courier-1", 41.5, 29.0, EVENT_TIME.toString()));
 
         verify(courierStoreEntryRepository, never()).save(any());
     }
@@ -97,7 +97,7 @@ class StoreEntryEventHandlerTest {
         when(reEntryLockService.isAllowed("courier-1", ATASEHIR.name())).thenReturn(false);
 
         storeEntryEventHandler.processStoreEntry(
-                new CourierLocationEventDTO("evt-2", "courier-1", 40.9923307, 29.1244229, EVENT_TIME_LATER));
+                new CourierLocationEventDTO("evt-2", "courier-1", 40.9923307, 29.1244229, EVENT_TIME_LATER.toString()));
 
         verify(courierStoreEntryRepository, never()).save(any());
     }

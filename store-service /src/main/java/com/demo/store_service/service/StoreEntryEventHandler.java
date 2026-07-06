@@ -46,7 +46,7 @@ public class StoreEntryEventHandler {
             }
 
             courierStoreEntryRepository.save(new CourierStoreEntryEntity(
-                    courier, store.name(), event.time()));
+                    courier, store.name(), event.eventTime()));
 
             log.info("Store entry logged. courierId={}, store={}", event.courierId(), store.name());
             break;

@@ -27,7 +27,7 @@ class CourierLocationConsumerTest {
 
     @Test
     void delegatesToHandler() {
-        var event = new CourierLocationEventDTO("courier-1_1720000000", "courier-1", 40.99, 29.12, EVENT_TIME);
+        var event = new CourierLocationEventDTO("courier-1_1720000000", "courier-1", 40.99, 29.12, EVENT_TIME.toString());
 
         courierLocationConsumer.consume(event);
 
@@ -36,7 +36,7 @@ class CourierLocationConsumerTest {
 
     @Test
     void rethrowsHandlerException() {
-        var event = new CourierLocationEventDTO("courier-1_1720000000", "courier-1", 40.99, 29.12, EVENT_TIME);
+        var event = new CourierLocationEventDTO("courier-1_1720000000", "courier-1", 40.99, 29.12, EVENT_TIME.toString());
         doThrow(new RuntimeException("db down")).when(courierLocationEventHandler).processCourierLocation(event);
 
         assertThrows(RuntimeException.class, () -> courierLocationConsumer.consume(event));

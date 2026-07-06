@@ -3,6 +3,8 @@ server:
 app:
   distance-service:
     url: http://localhost:8082
+  store-service:
+    url: http://localhost:8083
   kafka:
     courier-location-topic: "tracking.courier.location"
 
@@ -31,3 +33,8 @@ management:
       exposure:
         include: health,prometheus
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
