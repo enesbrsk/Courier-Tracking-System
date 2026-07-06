@@ -58,4 +58,8 @@ public class CourierDistanceEntity {
         this.lastLongitude = longitude;
         this.lastTime = time;
     }
+
+    public boolean hasLastKnownLocation() {
+        return lastLatitude != null && lastLongitude != null && lastTime != null;
+    }
 }
