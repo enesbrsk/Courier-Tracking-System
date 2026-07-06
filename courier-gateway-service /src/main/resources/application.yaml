@@ -15,6 +15,8 @@ spring:
 
   kafka:
     bootstrap-servers: localhost:9094
+    template:
+      observation-enabled: true
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -22,4 +24,10 @@ spring:
         enable.idempotence: true
         acks: all
         retries: 3
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
 

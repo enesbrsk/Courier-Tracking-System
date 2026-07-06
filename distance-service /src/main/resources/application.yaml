@@ -12,6 +12,8 @@ spring:
     name: distance-service
   kafka:
     bootstrap-servers: localhost:9094
+    listener:
+      observation-enabled: true
     consumer:
       group-id: distance-service
       auto-offset-reset: latest
@@ -37,3 +39,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
