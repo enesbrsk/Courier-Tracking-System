@@ -1,3 +1,40 @@
+server:
+  port: 8083
+
+app:
+  kafka:
+    courier-location-topic: tracking.courier.location
+  store:
+    entry-radius-meters: 100
+    reentry-lock-seconds: 60
+
 spring:
   application:
-    name: store-service 
+    name: store-service
+  kafka:
+    bootstrap-servers: localhost:9094
+    consumer:
+      group-id: store-service
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "com.demo.store_service.model.dto"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.demo.store_service.model.dto.CourierLocationEventDTO
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 2
+  datasource:
+    url: jdbc:postgresql://localhost:5432/courier_tracking
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect

@@ -30,7 +30,7 @@ public class CourierLocationEventHandler {
     public void processCourierLocation(CourierLocationEventDTO event) {
         Optional<CachedCourierLastLocation> previousCourierLocation = resolvePreviousLocation(event.courier());
 
-        var courier = courierDistanceRepository.findByCourierId(event.courier())
+        var courier = courierDistanceRepository.findByCourier_Id(event.courier())
                 .orElseThrow(() -> new CourierNotFoundException(event.courier()));
 
         if (previousCourierLocation.isPresent()) {
@@ -53,7 +53,7 @@ public class CourierLocationEventHandler {
 
     private Optional<CachedCourierLastLocation> resolvePreviousLocation(String courierId) {
         return cachedLastLocationRepository.findById(courierId)
-                .or(() -> courierDistanceRepository.findByCourierId(courierId)
+                .or(() -> courierDistanceRepository.findByCourier_Id(courierId)
                         .filter(entity -> entity.getLastLatitude() != null)
                         .map(entity -> {
                             var cached = new CachedCourierLastLocation(

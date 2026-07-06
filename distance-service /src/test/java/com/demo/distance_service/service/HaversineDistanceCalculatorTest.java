@@ -1,4 +1,4 @@
-package com.demo.distance_service.calculator;
+package com.demo.distance_service.service;
 
 import com.demo.distance_service.service.calculator.HaversineDistanceCalculator;
 import org.junit.jupiter.api.Test;
