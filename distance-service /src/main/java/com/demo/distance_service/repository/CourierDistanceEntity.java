@@ -12,6 +12,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -35,8 +37,8 @@ public class CourierDistanceEntity {
     @Column(name = "last_longitude")
     private Double lastLongitude;
 
-    @Column(name = "last_timestamp")
-    private Long lastTimestamp;
+    @Column(name = "last_time")
+    private Instant lastTime;
 
     public CourierDistanceEntity(CourierEntity courier) {
         this.courier = courier;
@@ -51,9 +53,9 @@ public class CourierDistanceEntity {
         this.totalDistance += distance;
     }
 
-    public void updateLastLocation(double latitude, double longitude, long timestamp) {
+    public void updateLastLocation(double latitude, double longitude, Instant time) {
         this.lastLatitude = latitude;
         this.lastLongitude = longitude;
-        this.lastTimestamp = timestamp;
+        this.lastTime = time;
     }
 }

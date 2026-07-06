@@ -8,12 +8,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CourierLocationConsumerTest {
+
+    private static final Instant EVENT_TIME = Instant.parse("2024-07-03T13:46:40Z");
 
     @Mock
     CourierLocationEventHandler courierLocationEventHandler;
@@ -23,7 +27,7 @@ class CourierLocationConsumerTest {
 
     @Test
     void delegatesToHandler() {
-        var event = new CourierLocationEventDTO("courier-1_1720000000", "courier-1", 40.99, 29.12, 1720000000L);
+        var event = new CourierLocationEventDTO("courier-1_1720000000", "courier-1", 40.99, 29.12, EVENT_TIME);
 
         courierLocationConsumer.consume(event);
 
@@ -32,7 +36,7 @@ class CourierLocationConsumerTest {
 
     @Test
     void rethrowsHandlerException() {
-        var event = new CourierLocationEventDTO("courier-1_1720000000", "courier-1", 40.99, 29.12, 1720000000L);
+        var event = new CourierLocationEventDTO("courier-1_1720000000", "courier-1", 40.99, 29.12, EVENT_TIME);
         doThrow(new RuntimeException("db down")).when(courierLocationEventHandler).processCourierLocation(event);
 
         assertThrows(RuntimeException.class, () -> courierLocationConsumer.consume(event));

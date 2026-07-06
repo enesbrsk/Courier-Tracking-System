@@ -8,10 +8,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.Mockito.*;
+import java.time.Instant;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CourierLocationServiceTest {
+
+    private static final Instant EVENT_TIME = Instant.parse("2024-07-03T13:46:40Z");
 
     @Mock
     private CourierLocationPublisher locationPublisher;
@@ -21,19 +26,16 @@ class CourierLocationServiceTest {
 
     @Test
     void shouldProcessAndPublishLocationSuccessfully() {
-        // Given
         var event = new CourierLocationEventDTO(
                 "courier1_1720000000",
                 "courier1",
                 40.9923307,
                 29.1244229,
-                1720000000L
+                EVENT_TIME
         );
 
-        // When
         courierLocationService.processLocation(event);
 
-        // Then
         verify(locationPublisher, times(1)).publish(event);
     }
 }

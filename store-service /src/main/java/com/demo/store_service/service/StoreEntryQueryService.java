@@ -19,9 +19,9 @@ public class StoreEntryQueryService {
         var courier = courierRepository.findById(courierId)
                 .orElseThrow(() -> new CourierNotFoundException(courierId));
 
-        var entries = courierStoreEntryRepository.findByCourier_IdOrderByClientTimestampDesc(courierId)
+        var entries = courierStoreEntryRepository.findByCourier_IdOrderByTimeDesc(courierId)
                 .stream()
-                .map(entry -> new StoreEntryResponse(entry.getStoreName(), entry.getClientTimestamp()))
+                .map(entry -> new StoreEntryResponse(entry.getStoreName(), entry.getTime()))
                 .toList();
 
         return new CourierStoreEntriesResponse(courierId, courier.getName(), entries);

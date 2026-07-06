@@ -12,6 +12,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -29,13 +31,13 @@ public class CourierStoreEntryEntity {
     @Column(name = "store_name", nullable = false)
     private String storeName;
 
-    @Column(name = "client_timestamp", nullable = false)
-    private long clientTimestamp;
+    @Column(name = "time", nullable = false)
+    private Instant time;
 
-    public CourierStoreEntryEntity(CourierEntity courier, String storeName, long clientTimestamp) {
+    public CourierStoreEntryEntity(CourierEntity courier, String storeName, Instant time) {
         this.courier = courier;
         this.storeName = storeName;
-        this.clientTimestamp = clientTimestamp;
+        this.time = time;
     }
 
     public String getCourierId() {

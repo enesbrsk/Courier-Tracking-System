@@ -18,7 +18,7 @@ public class CourierLocationService {
 
     public void processLocation(CourierLocationEventDTO courierLocationEventDTO) {
         log.info("Gateway received location event. CourierID: {}, Timestamp: {}",
-                courierLocationEventDTO.courier(), courierLocationEventDTO.timestamp());
+                courierLocationEventDTO.courierId(), courierLocationEventDTO.time());
 
         locationPublisher.publish(courierLocationEventDTO);
     }

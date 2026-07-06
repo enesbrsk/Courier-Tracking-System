@@ -19,13 +19,13 @@ public class CourierLocationConsumer {
             groupId = "${spring.kafka.consumer.group-id}"
     )
     public void consume(CourierLocationEventDTO event) {
-        log.debug("Consumed event. courier={}, eventId={}", event.courier(), event.eventId());
+        log.debug("Consumed event. courierId={}, eventId={}", event.courierId(), event.eventId());
 
         try {
             courierLocationEventHandler.processCourierLocation(event);
         } catch (Exception ex) {
-            log.error("Failed to process location event. courier={}, eventId={}",
-                    event.courier(), event.eventId(), ex);
+            log.error("Failed to process location event. courierId={}, eventId={}",
+                    event.courierId(), event.eventId(), ex);
             throw ex;
         }
     }

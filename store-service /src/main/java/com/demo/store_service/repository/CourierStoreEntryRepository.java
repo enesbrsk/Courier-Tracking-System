@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface CourierStoreEntryRepository extends JpaRepository<CourierStoreEntryEntity, Long> {
 
-    List<CourierStoreEntryEntity> findByCourier_IdOrderByClientTimestampDesc(String courierId);
+    List<CourierStoreEntryEntity> findByCourier_IdOrderByTimeDesc(String courierId);
 }

@@ -2,22 +2,24 @@ package com.demo.courier_gateway_service.model.dto;
 
 import com.demo.courier_gateway_service.model.request.CourierLocationRequest;
 
+import java.time.Instant;
+
 public record CourierLocationEventDTO(
         String eventId,
-        String courier,
+        String courierId,
         Double latitude,
         Double longitude,
-        Long timestamp
+        Instant time
 ) {
     public static CourierLocationEventDTO fromRequest(CourierLocationRequest request) {
-        String deterministicEventId = request.courier() + "_" + request.timestamp();
+        String deterministicEventId = request.courierId() + "_" + request.time().toEpochMilli();
 
         return new CourierLocationEventDTO(
                 deterministicEventId,
-                request.courier(),
+                request.courierId(),
                 request.latitude(),
                 request.longitude(),
-                request.timestamp()
+                request.time()
         );
     }
 }

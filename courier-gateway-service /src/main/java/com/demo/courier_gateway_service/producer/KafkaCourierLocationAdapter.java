@@ -18,7 +18,7 @@ public class KafkaCourierLocationAdapter implements CourierLocationPublisher {
     @Override
     public void publish(CourierLocationEventDTO event) {
         var topic = topicProperties.courierLocationTopic();
-        var partitionKey = event.courier();
+        var partitionKey = event.courierId();
 
         log.debug("Publishing event to Kafka. Topic: {}, PartitionKey: {}", topic, partitionKey);
 

@@ -5,7 +5,6 @@ import com.demo.store_service.model.Store;
 import com.demo.store_service.model.StoreProperties;
 import com.demo.store_service.model.dto.CourierLocationEventDTO;
 import com.demo.store_service.registry.StoreRegistry;
-import com.demo.store_service.repository.CourierEntity;
 import com.demo.store_service.repository.CourierRepository;
 import com.demo.store_service.repository.CourierStoreEntryEntity;
 import com.demo.store_service.repository.CourierStoreEntryRepository;
@@ -14,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -31,8 +28,8 @@ public class StoreEntryEventHandler {
 
     @Transactional
     public void processStoreEntry(CourierLocationEventDTO event) {
-        var courier = courierRepository.findById(event.courier())
-                .orElseThrow(() -> new CourierNotFoundException(event.courier()));
+        var courier = courierRepository.findById(event.courierId())
+                .orElseThrow(() -> new CourierNotFoundException(event.courierId()));
 
         for (Store store : storeRegistry.getStores()) {
             double distance = distanceCalculator.calculateMeters(
@@ -43,15 +40,15 @@ public class StoreEntryEventHandler {
                 continue;
             }
 
-            if (!reEntryLockService.isAllowed(event.courier(), store.name())) {
-                log.info("Re-entry skipped. courier={}, store={}", event.courier(), store.name());
+            if (!reEntryLockService.isAllowed(event.courierId(), store.name())) {
+                log.info("Re-entry skipped. courierId={}, store={}", event.courierId(), store.name());
                 continue;
             }
 
             courierStoreEntryRepository.save(new CourierStoreEntryEntity(
-                    courier, store.name(), event.timestamp()));
+                    courier, store.name(), event.time()));
 
-            log.info("Store entry logged. courier={}, store={}", event.courier(), store.name());
+            log.info("Store entry logged. courierId={}, store={}", event.courierId(), store.name());
             break;
         }
     }
