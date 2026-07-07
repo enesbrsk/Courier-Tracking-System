@@ -8,7 +8,6 @@ import com.demo.store_service.registry.StoreRegistry;
 import com.demo.store_service.repository.CourierRepository;
 import com.demo.store_service.repository.CourierStoreEntryEntity;
 import com.demo.store_service.repository.CourierStoreEntryRepository;
-import com.demo.store_service.service.calculator.DistanceCalculator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ public class StoreEntryEventHandler {
 
     private final CourierRepository courierRepository;
     private final StoreRegistry storeRegistry;
-    private final DistanceCalculator distanceCalculator;
+    private final DistanceService distanceService;
     private final StoreProperties storeProperties;
     private final ReEntryLockService reEntryLockService;
     private final CourierStoreEntryRepository courierStoreEntryRepository;
@@ -32,7 +31,7 @@ public class StoreEntryEventHandler {
                 .orElseThrow(() -> new CourierNotFoundException(event.courierId()));
 
         for (Store store : storeRegistry.getStores()) {
-            double distance = distanceCalculator.calculateMeters(
+            double distance = distanceService.calculateMeters(
                     event.latitude(), event.longitude(),
                     store.lat(), store.lng());
 

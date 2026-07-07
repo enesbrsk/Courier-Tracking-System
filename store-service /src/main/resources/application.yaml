@@ -7,6 +7,8 @@ app:
   store:
     entry-radius-meters: 100
     reentry-lock-seconds: 60
+  distance:
+    strategy: haversine
 
 spring:
   application:

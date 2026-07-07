@@ -1,13 +1,11 @@
 package com.demo.store_service;
 
-import com.demo.store_service.model.KafkaTopicProperties;
-import com.demo.store_service.model.StoreProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
-@EnableConfigurationProperties({KafkaTopicProperties.class, StoreProperties.class})
+@ConfigurationPropertiesScan
 public class StoreServiceApplication {
 
 	public static void main(String[] args) {

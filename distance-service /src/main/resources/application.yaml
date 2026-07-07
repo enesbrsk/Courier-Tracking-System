@@ -5,6 +5,7 @@ app:
   kafka:
     courier-location-topic: tracking.courier.location
   distance:
+    strategy: haversine
     min-movement-threshold-meters: 10
 
 spring:

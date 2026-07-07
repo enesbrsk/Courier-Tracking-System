@@ -1,12 +1,11 @@
 package com.demo.distance_service.service;
 
+import com.demo.distance_service.config.DistanceConfig;
 import com.demo.distance_service.exception.CourierNotFoundException;
-import com.demo.distance_service.model.DistanceProperties;
 import com.demo.distance_service.model.dto.CourierLocationEventDTO;
 import com.demo.distance_service.repository.CourierDistanceEntity;
 import com.demo.distance_service.repository.CourierDistanceRepository;
 import com.demo.distance_service.repository.CourierRepository;
-import com.demo.distance_service.service.calculator.DistanceCalculator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,8 @@ public class CourierLocationEventHandler {
 
     private final CourierRepository courierRepository;
     private final CourierDistanceRepository courierDistanceRepository;
-    private final DistanceCalculator distanceCalculator;
-    private final DistanceProperties distanceProperties;
+    private final DistanceService distanceService;
+    private final DistanceConfig distanceConfig;
 
     @Transactional
     public void processCourierLocation(CourierLocationEventDTO event) {
@@ -31,11 +30,11 @@ public class CourierLocationEventHandler {
                 .orElseGet(() -> new CourierDistanceEntity(courierEntity));
 
         if (courier.hasLastKnownLocation()) {
-            double distance = distanceCalculator.calculateMeters(
+            double distance = distanceService.calculateMeters(
                     courier.getLastLatitude(), courier.getLastLongitude(),
                     event.latitude(), event.longitude());
 
-            if (distance >= distanceProperties.minMovementThresholdMeters()) {
+            if (distance >= distanceConfig.minMovementThresholdMeters()) {
                 courier.addDistance(distance);
                 log.info("Distance added. courierId={}, meters={}", event.courierId(), distance);
             }

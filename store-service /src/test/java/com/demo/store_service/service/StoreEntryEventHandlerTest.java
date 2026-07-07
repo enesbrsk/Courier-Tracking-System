@@ -8,7 +8,6 @@ import com.demo.store_service.repository.CourierEntity;
 import com.demo.store_service.repository.CourierRepository;
 import com.demo.store_service.repository.CourierStoreEntryEntity;
 import com.demo.store_service.repository.CourierStoreEntryRepository;
-import com.demo.store_service.service.calculator.DistanceCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +41,7 @@ class StoreEntryEventHandlerTest {
     StoreRegistry storeRegistry;
 
     @Mock
-    DistanceCalculator distanceCalculator;
+    DistanceService distanceService;
 
     @Mock
     StoreProperties storeProperties;
@@ -65,7 +64,7 @@ class StoreEntryEventHandlerTest {
     void processStoreEntry_CourierWithinRadius_ShouldLogEntry() {
         when(storeRegistry.getStores()).thenReturn(List.of(ATASEHIR));
         when(storeProperties.entryRadiusMeters()).thenReturn(100.0);
-        when(distanceCalculator.calculateMeters(40.9923307, 29.1244229, 40.9923307, 29.1244229)).thenReturn(0.0);
+        when(distanceService.calculateMeters(40.9923307, 29.1244229, 40.9923307, 29.1244229)).thenReturn(0.0);
         when(reEntryLockService.isAllowed("courier-1", ATASEHIR.name())).thenReturn(true);
 
         storeEntryEventHandler.processStoreEntry(
@@ -81,7 +80,7 @@ class StoreEntryEventHandlerTest {
     void processStoreEntry_CourierOutsideRadius_ShouldSkipEntry() {
         when(storeRegistry.getStores()).thenReturn(List.of(ATASEHIR));
         when(storeProperties.entryRadiusMeters()).thenReturn(100.0);
-        when(distanceCalculator.calculateMeters(41.5, 29.0, 40.9923307, 29.1244229)).thenReturn(60000.0);
+        when(distanceService.calculateMeters(41.5, 29.0, 40.9923307, 29.1244229)).thenReturn(60000.0);
 
         storeEntryEventHandler.processStoreEntry(
                 new CourierLocationEventDTO("evt-1", "courier-1", 41.5, 29.0, EVENT_TIME.toString()));
@@ -93,7 +92,7 @@ class StoreEntryEventHandlerTest {
     void processStoreEntry_ReEntryWithinLockWindow_ShouldSkipEntry() {
         when(storeRegistry.getStores()).thenReturn(List.of(ATASEHIR));
         when(storeProperties.entryRadiusMeters()).thenReturn(100.0);
-        when(distanceCalculator.calculateMeters(40.9923307, 29.1244229, 40.9923307, 29.1244229)).thenReturn(0.0);
+        when(distanceService.calculateMeters(40.9923307, 29.1244229, 40.9923307, 29.1244229)).thenReturn(0.0);
         when(reEntryLockService.isAllowed("courier-1", ATASEHIR.name())).thenReturn(false);
 
         storeEntryEventHandler.processStoreEntry(

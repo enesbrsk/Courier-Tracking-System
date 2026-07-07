@@ -1,8 +1,9 @@
-package com.demo.distance_service.model;
+package com.demo.store_service.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "app.distance")
-public record DistanceProperties(
-        double minMovementThresholdMeters
-) {}
+public record DistanceConfig(
+        String strategy
+) {
+}

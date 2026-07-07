@@ -1,12 +1,11 @@
 package com.demo.distance_service.service;
 
-import com.demo.distance_service.model.DistanceProperties;
+import com.demo.distance_service.config.DistanceConfig;
 import com.demo.distance_service.model.dto.CourierLocationEventDTO;
 import com.demo.distance_service.repository.CourierDistanceEntity;
 import com.demo.distance_service.repository.CourierDistanceRepository;
 import com.demo.distance_service.repository.CourierEntity;
 import com.demo.distance_service.repository.CourierRepository;
-import com.demo.distance_service.service.calculator.DistanceCalculator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -37,10 +36,10 @@ class LocationEventHandlerTest {
     CourierDistanceRepository courierDistanceRepository;
 
     @Mock
-    DistanceCalculator distanceCalculator;
+    DistanceService distanceService;
 
     @Mock
-    DistanceProperties distanceProperties;
+    DistanceConfig distanceConfig;
 
     @InjectMocks
     CourierLocationEventHandler courierLocationEventHandler;
@@ -58,7 +57,7 @@ class LocationEventHandlerTest {
         verify(courierDistanceRepository).save(captor.capture());
         assertEquals(0.0, captor.getValue().getTotalDistance());
         assertEquals("courier-1", captor.getValue().getCourierId());
-        verify(distanceCalculator, never()).calculateMeters(anyDouble(), anyDouble(), anyDouble(), anyDouble());
+        verify(distanceService, never()).calculateMeters(anyDouble(), anyDouble(), anyDouble(), anyDouble());
     }
 
     @Test
@@ -81,8 +80,8 @@ class LocationEventHandlerTest {
         var existing = new CourierDistanceEntity(COURIER);
         existing.updateLastLocation(40.99, 29.12, EVENT_TIME);
         when(courierDistanceRepository.findByCourier_Id("courier-1")).thenReturn(Optional.of(existing));
-        when(distanceCalculator.calculateMeters(40.99, 29.12, 41.00, 29.13)).thenReturn(1500.0);
-        when(distanceProperties.minMovementThresholdMeters()).thenReturn(10.0);
+        when(distanceService.calculateMeters(40.99, 29.12, 41.00, 29.13)).thenReturn(1500.0);
+        when(distanceConfig.minMovementThresholdMeters()).thenReturn(10.0);
 
         courierLocationEventHandler.processCourierLocation(
                 new CourierLocationEventDTO("evt-2", "courier-1", 41.00, 29.13, EVENT_TIME_LATER.toString()));
@@ -99,8 +98,8 @@ class LocationEventHandlerTest {
         existing.updateLastLocation(40.99, 29.12, EVENT_TIME);
         existing.addDistance(100.0);
         when(courierDistanceRepository.findByCourier_Id("courier-1")).thenReturn(Optional.of(existing));
-        when(distanceCalculator.calculateMeters(40.99, 29.12, 40.9901, 29.1201)).thenReturn(5.0);
-        when(distanceProperties.minMovementThresholdMeters()).thenReturn(10.0);
+        when(distanceService.calculateMeters(40.99, 29.12, 40.9901, 29.1201)).thenReturn(5.0);
+        when(distanceConfig.minMovementThresholdMeters()).thenReturn(10.0);
 
         courierLocationEventHandler.processCourierLocation(
                 new CourierLocationEventDTO("evt-2", "courier-1", 40.9901, 29.1201, EVENT_TIME_LATER.toString()));
