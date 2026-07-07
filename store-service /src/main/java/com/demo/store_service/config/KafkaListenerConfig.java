@@ -12,7 +12,7 @@ public class KafkaListenerConfig {
 
     @Bean
     CommonErrorHandler kafkaErrorHandler() {
-        var errorHandler = new DefaultErrorHandler(new FixedBackOff(500L, 3L));
+        var errorHandler = new DefaultErrorHandler(new FixedBackOff(200L, 2L));
         errorHandler.addNotRetryableExceptions(CourierNotFoundException.class);
         return errorHandler;
     }
