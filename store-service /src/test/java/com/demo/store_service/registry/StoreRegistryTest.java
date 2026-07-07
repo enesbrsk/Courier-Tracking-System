@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class StoreRegistryTest {
 
     @Test
-    void loadsStoresFromClasspath() throws IOException {
+    void getStores_FromClasspath_ShouldLoadAllStores() throws IOException {
         var registry = new StoreRegistry();
         registry.getStores();
 

@@ -38,7 +38,7 @@ class CourierLocationServiceTest {
     private CourierLocationService courierLocationService;
 
     @Test
-    void shouldProcessAndPublishLocationSuccessfully() {
+    void processLocation_ValidEvent_ShouldPublishToKafka() {
         var event = new CourierLocationEventDTO(
                 "courier1_1720000000",
                 "courier1",
@@ -53,7 +53,7 @@ class CourierLocationServiceTest {
     }
 
     @Test
-    void shouldProxyTotalDistanceQuery() {
+    void getTotalDistance_ValidCourierId_ShouldProxyToDistanceService() {
         var response = new CourierTotalDistanceResponse("courier-1", "Test Courier 1", 1250.5);
         when(distanceServiceClient.getTotalDistance("courier-1")).thenReturn(response);
 
@@ -64,7 +64,7 @@ class CourierLocationServiceTest {
     }
 
     @Test
-    void shouldProxyStoreEntriesQuery() {
+    void getStoreEntries_ValidCourierId_ShouldProxyToStoreService() {
         var response = new CourierStoreEntriesResponse("courier-1", "Test Courier 1", List.of());
         when(storeServiceClient.getStoreEntries("courier-1")).thenReturn(response);
 

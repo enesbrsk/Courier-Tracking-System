@@ -26,7 +26,7 @@ class CourierLocationConsumerTest {
     CourierLocationConsumer courierLocationConsumer;
 
     @Test
-    void delegatesToHandler() {
+    void consume_ValidEvent_ShouldDelegateToHandler() {
         var event = new CourierLocationEventDTO("courier-1_1720000000", "courier-1", 40.99, 29.12, EVENT_TIME.toString());
 
         courierLocationConsumer.consume(event);
@@ -35,7 +35,7 @@ class CourierLocationConsumerTest {
     }
 
     @Test
-    void rethrowsHandlerException() {
+    void consume_HandlerFailure_ShouldRethrowException() {
         var event = new CourierLocationEventDTO("courier-1_1720000000", "courier-1", 40.99, 29.12, EVENT_TIME.toString());
         doThrow(new RuntimeException("db down")).when(storeEntryEventHandler).processStoreEntry(event);
 

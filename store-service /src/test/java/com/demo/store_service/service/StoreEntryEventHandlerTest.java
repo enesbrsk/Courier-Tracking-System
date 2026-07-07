@@ -62,7 +62,7 @@ class StoreEntryEventHandlerTest {
     }
 
     @Test
-    void logsEntryWhenCourierIsWithinRadius() {
+    void processStoreEntry_CourierWithinRadius_ShouldLogEntry() {
         when(storeRegistry.getStores()).thenReturn(List.of(ATASEHIR));
         when(storeProperties.entryRadiusMeters()).thenReturn(100.0);
         when(distanceCalculator.calculateMeters(40.9923307, 29.1244229, 40.9923307, 29.1244229)).thenReturn(0.0);
@@ -78,7 +78,7 @@ class StoreEntryEventHandlerTest {
     }
 
     @Test
-    void skipsWhenCourierIsOutsideRadius() {
+    void processStoreEntry_CourierOutsideRadius_ShouldSkipEntry() {
         when(storeRegistry.getStores()).thenReturn(List.of(ATASEHIR));
         when(storeProperties.entryRadiusMeters()).thenReturn(100.0);
         when(distanceCalculator.calculateMeters(41.5, 29.0, 40.9923307, 29.1244229)).thenReturn(60000.0);
@@ -90,7 +90,7 @@ class StoreEntryEventHandlerTest {
     }
 
     @Test
-    void skipsReEntryWithinLockWindow() {
+    void processStoreEntry_ReEntryWithinLockWindow_ShouldSkipEntry() {
         when(storeRegistry.getStores()).thenReturn(List.of(ATASEHIR));
         when(storeProperties.entryRadiusMeters()).thenReturn(100.0);
         when(distanceCalculator.calculateMeters(40.9923307, 29.1244229, 40.9923307, 29.1244229)).thenReturn(0.0);
