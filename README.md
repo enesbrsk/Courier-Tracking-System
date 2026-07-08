@@ -19,7 +19,6 @@ The project uses a **microservice architecture** with an **event-driven** flow o
 - [API](#api)
 - [Demo Script](#demo-script)
 - [Monitoring](#monitoring)
-- [Known Limitations](#known-limitations)
 - [Future Plans](#future-plans)
 - [Shutdown](#shutdown)
 
