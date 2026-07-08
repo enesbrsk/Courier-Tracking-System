@@ -13,6 +13,9 @@ app:
 spring:
   application:
     name: store-service
+  threads:
+    virtual:
+      enabled: true
   kafka:
     bootstrap-servers: localhost:9094
     listener:

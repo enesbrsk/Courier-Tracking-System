@@ -11,6 +11,9 @@ app:
 spring:
   application:
     name: distance-service
+  threads:
+    virtual:
+      enabled: true
   kafka:
     bootstrap-servers: localhost:9094
     listener:
